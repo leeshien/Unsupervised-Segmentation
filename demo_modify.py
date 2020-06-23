@@ -119,8 +119,8 @@ def run():
             for lab_id, color in enumerate(color_avg):
                 img_flatten[lab_inverse == lab_id] = color
             show = img_flatten.reshape(image.shape)
-        cv2.imshow("seg_pt", show)
-        cv2.waitKey(1)
+#         cv2.imshow("seg_pt", show)
+#         cv2.waitKey(1)
         print('yes 7')
         print('Loss:', batch_idx, loss.item())
         if len(un_label) < args.min_label_num:
