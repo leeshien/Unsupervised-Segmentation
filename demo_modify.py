@@ -74,6 +74,7 @@ def run():
         print('label {} - {}'.format(u[i], count[i]))
     seg_lab = [np.where(seg_map == u_label)[0]
                for u_label in np.unique(seg_map)]
+    print('seg_lab :', seg_lab)
     
     '''train init'''
     device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
@@ -89,7 +90,7 @@ def run():
     optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-1, momentum=0.0)
     
     image_flatten = image.reshape((-1, 3))
-    color_avg = np.random.randint(255, size=(args.max_label_num, 3))
+    color_avg = np.random.randint(255, size=(args.max_label_num, len(seg_lab))
     show = image
     
     '''train loop'''
