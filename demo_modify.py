@@ -136,7 +136,7 @@ def run():
     time0 = time.time() - start_time0
     time1 = time.time() - start_time1
     print('PyTorchInit: %.2f\nTimeUsed: %.2f' % (time0, time1))
-    cv2.imwrite("seg_%s_%ds.jpg" % (input_args.output_dir[6:-4], time1), show)
+    cv2.imwrite("seg_%s_%ds.jpg" % (input_args.output_dir, time1), show)
 
 
 if __name__ == '__main__':
