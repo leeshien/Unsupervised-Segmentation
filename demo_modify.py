@@ -61,6 +61,7 @@ def run():
     np.random.seed(1943)
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_id)  # choose GPU:0
     image = cv2.imread(input_args.img_path)
+    print('yes 1')
 
     '''segmentation ML'''
     seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=64)
@@ -68,7 +69,7 @@ def run():
     seg_map = seg_map.flatten()
     seg_lab = [np.where(seg_map == u_label)[0]
                for u_label in np.unique(seg_map)]
-
+    print('yes 2')
     '''train init'''
     device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
 
@@ -81,11 +82,11 @@ def run():
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=5e-2, momentum=0.9)
     # optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-1, momentum=0.0)
-
+    
     image_flatten = image.reshape((-1, 3))
     color_avg = np.random.randint(255, size=(args.max_label_num, 3))
     show = image
-
+    print('yes 3')
     '''train loop'''
     start_time1 = time.time()
     model.train()
@@ -124,7 +125,7 @@ def run():
         print('Loss:', batch_idx, loss.item())
         if len(un_label) < args.min_label_num:
             break
-
+    print('yes 4')
     '''save'''
     time0 = time.time() - start_time0
     time1 = time.time() - start_time1
