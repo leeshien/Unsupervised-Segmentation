@@ -63,6 +63,7 @@ def run():
     image = cv2.imread(input_args.img_path)
 
     '''segmentation ML'''
+    min_seg_size = (image.shape[0] * image.shape[1]) // 20
     seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=64)
     # seg_map = segmentation.slic(image, n_segments=10000, compactness=100)
     seg_map = seg_map.flatten()
@@ -110,6 +111,7 @@ def run():
         optimizer.step()
         
         '''show image'''
+        print('im_target: ', im_target)
         un_label, lab_inverse = np.unique(im_target, return_inverse=True, )
         if un_label.shape[0] < args.max_label_num:  # update show
             img_flatten = image_flatten.copy()
