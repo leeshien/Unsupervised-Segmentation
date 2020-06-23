@@ -90,7 +90,7 @@ def run():
     optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-1, momentum=0.0)
     
     image_flatten = image.reshape((-1, 3))
-    color_avg = np.random.randint(255, size=(args.max_label_num, len(seg_lab))
+    color_avg = np.random.randint(255, size=(args.max_label_num, len(seg_lab)))
     show = image
     
     '''train loop'''
