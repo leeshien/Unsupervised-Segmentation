@@ -121,11 +121,12 @@ def run():
             show = img_flatten.reshape(image.shape)
         cv2.imshow("seg_pt", show)
         cv2.waitKey(1)
-
+        print('yes 7')
         print('Loss:', batch_idx, loss.item())
         if len(un_label) < args.min_label_num:
+            print('breaking the loop')
             break
-    print('yes 4')
+    print('yes 7')
     '''save'''
     time0 = time.time() - start_time0
     time1 = time.time() - start_time1
