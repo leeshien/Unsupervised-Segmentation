@@ -5,6 +5,7 @@ import argparse
 import cv2
 import numpy as np
 from skimage import segmentation
+import imageio
 
 import torch
 import torch.nn as nn
@@ -138,6 +139,7 @@ def run():
     print('PyTorchInit: %.2f\nTimeUsed: %.2f' % (time0, time1))
     save_path = "{}seg_{}".format(input_args.output_dir, '_'.join(input_args.img_path.split('/')[-2:]))
     print('save_path: ', save_path)
+    imageio.imwrite(save_path, show)
     cv2.imwrite(save_path, show)
     print('saved image to {}'.format(save_path))
 
