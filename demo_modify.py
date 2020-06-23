@@ -1,5 +1,6 @@
 import os
 import time
+import argparse
 
 import cv2
 import numpy as np
@@ -8,9 +9,15 @@ from skimage import segmentation
 import torch
 import torch.nn as nn
 
-
+def get_arguments():
+    parser = argparse.ArgumentParser(description="Unsupervised Segmentation")
+    parser.add_argument("img_path", type=str, default='',
+                        help="Path to the RGB image file.")
+    parser.add_argument("output_dir", type=str, default='',
+                        help="Dir to save output image file.")    
+    return parser.parse_args()
+    
 class Args(object):
-    input_image_path = 'image/woof.jpg'  # image/coral.jpg image/tiger.jpg
     train_epoch = 2 ** 6
     mod_dim1 = 64  #
     mod_dim2 = 32
@@ -48,11 +55,12 @@ class MyNet(nn.Module):
 def run():
     start_time0 = time.time()
 
+    input_args = get_arguments()
     args = Args()
     torch.cuda.manual_seed_all(1943)
     np.random.seed(1943)
     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu_id)  # choose GPU:0
-    image = cv2.imread(args.input_image_path)
+    image = cv2.imread(input_args.img_path)
 
     '''segmentation ML'''
     seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=64)
@@ -121,7 +129,7 @@ def run():
     time0 = time.time() - start_time0
     time1 = time.time() - start_time1
     print('PyTorchInit: %.2f\nTimeUsed: %.2f' % (time0, time1))
-    cv2.imwrite("seg_%s_%ds.jpg" % (args.input_image_path[6:-4], time1), show)
+    cv2.imwrite("seg_%s_%ds.jpg" % (input_args.output_dir[6:-4], time1), show)
 
 
 if __name__ == '__main__':
