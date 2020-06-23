@@ -136,7 +136,7 @@ def run():
     time0 = time.time() - start_time0
     time1 = time.time() - start_time1
     print('PyTorchInit: %.2f\nTimeUsed: %.2f' % (time0, time1))
-    save_path = "{}seg_{}.jpg".format(input_args.output_dir, time1)
+    save_path = "{}seg_{}.jpg".format(input_args.output_dir, '_'.join(input_args.img_path.split('/')[-2:]))
     print('save_path: ', save_path)
     cv2.imwrite(save_path, show)
     print('saved image to {}'.format(save_path))
