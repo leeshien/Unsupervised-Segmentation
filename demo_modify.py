@@ -69,12 +69,8 @@ def run():
     seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=min_seg_size)
     # seg_map = segmentation.slic(image, n_segments=10000, compactness=100)
     seg_map = seg_map.flatten()
-    u, count = np.unique(seg_map,return_counts=True)
-    for i in range(len(u)):
-        print('label {} - {}'.format(u[i], count[i]))
     seg_lab = [np.where(seg_map == u_label)[0]
                for u_label in np.unique(seg_map)]
-    print('seg_lab :', seg_lab)
     
     '''train init'''
     device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
@@ -107,6 +103,8 @@ def run():
         for inds in seg_lab:
             u_labels, hist = np.unique(im_target[inds], return_counts=True)
             im_target[inds] = u_labels[np.argmax(hist)]
+        for i in range(len(u_labels)):
+            print('label {} - {}'.format(u_labels[i], hist[i]))
 
         '''backward'''
         target = torch.from_numpy(im_target)
@@ -118,6 +116,7 @@ def run():
         '''show image'''
         print('im_target: ', im_target)
         un_label, lab_inverse = np.unique(im_target, return_inverse=True, )
+        print('un_label: ', un_label)
         if un_label.shape[0] < args.max_label_num:  # update show
             img_flatten = image_flatten.copy()
             color_avg = np.random.randint(255, size=(un_label.shape[0], 3))
