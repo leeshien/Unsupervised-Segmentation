@@ -97,19 +97,19 @@ def run():
         output = output.permute(1, 2, 0).view(-1, args.mod_dim2)
         target = torch.argmax(output, 1)
         im_target = target.data.cpu().numpy()
-
+        print('yes 4')
         '''refine'''
         for inds in seg_lab:
             u_labels, hist = np.unique(im_target[inds], return_counts=True)
             im_target[inds] = u_labels[np.argmax(hist)]
-
+        print('yes 5')
         '''backward'''
         target = torch.from_numpy(im_target)
         target = target.to(device)
         loss = criterion(output, target)
         loss.backward()
         optimizer.step()
-
+        print('yes 6')
         '''show image'''
         un_label, lab_inverse = np.unique(im_target, return_inverse=True, )
         if un_label.shape[0] < args.max_label_num:  # update show
