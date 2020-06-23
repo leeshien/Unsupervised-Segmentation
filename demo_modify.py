@@ -64,7 +64,7 @@ def run():
 
     '''segmentation ML'''
     min_seg_size = (image.shape[0] * image.shape[1]) // 20
-    seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=64)
+    seg_map = segmentation.felzenszwalb(image, scale=32, sigma=0.5, min_size=min_seg_size)
     # seg_map = segmentation.slic(image, n_segments=10000, compactness=100)
     seg_map = seg_map.flatten()
     seg_lab = [np.where(seg_map == u_label)[0]
