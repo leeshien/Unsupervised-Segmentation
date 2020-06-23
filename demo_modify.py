@@ -90,7 +90,7 @@ def run():
     optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-1, momentum=0.0)
     
     image_flatten = image.reshape((-1, 3))
-    color_avg = np.random.randint(255, size=(args.max_label_num, len(seg_lab)))
+    color_avg = np.random.randint(255, size=(args.max_label_num, 3))
     show = image
     
     '''train loop'''
@@ -121,8 +121,10 @@ def run():
         un_label, lab_inverse = np.unique(im_target, return_inverse=True, )
         if un_label.shape[0] < args.max_label_num:  # update show
             img_flatten = image_flatten.copy()
+            print('initial color_avg: ', color_avg)
             if len(color_avg) != un_label.shape[0]:
                 color_avg = [np.mean(img_flatten[im_target == label], axis=0, dtype=np.int) for label in un_label]
+                print('after color_avg: ', color_avg)
             for lab_id, color in enumerate(color_avg):
                 img_flatten[lab_inverse == lab_id] = color
             show = img_flatten.reshape(image.shape)
